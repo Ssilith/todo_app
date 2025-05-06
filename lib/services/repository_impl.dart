@@ -40,7 +40,7 @@ class RepositoryImpl implements Repository {
         .from('todos')
         .select()
         .eq('user_id', getUserId())
-        .order('created_at', ascending: false);
+        .order('id', ascending: false);
     return (results as List)
         .map((e) => Todo.fromMap(e as Map<String, dynamic>))
         .toList();
