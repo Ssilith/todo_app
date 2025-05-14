@@ -27,7 +27,7 @@ Future<void> login(WidgetTester tester) async {
 
     final buttons = find.byType(TextButton);
     if (buttons.evaluate().isNotEmpty) {
-      await tester.tap(buttons.first);
+      await tester.tap(buttons.first, warnIfMissed: false);
       await tester.pumpAndSettle();
     }
   }
@@ -38,11 +38,11 @@ Future<void> logout(WidgetTester tester) async {
 
   final logoutIconButton = find.byIcon(Icons.logout_outlined);
   if (logoutIconButton.evaluate().isNotEmpty) {
-    await tester.tap(logoutIconButton);
+    await tester.tap(logoutIconButton, warnIfMissed: false);
   } else {
     final iconButtons = find.byType(IconButton);
     if (iconButtons.evaluate().isNotEmpty) {
-      await tester.tap(iconButtons.first);
+      await tester.tap(iconButtons.first, warnIfMissed: false);
     }
   }
 

@@ -57,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 15),
         RectangularButton(
+          key: Key('loginButton'),
           title: "LOGIN",
           isLoading: isLoading,
           onPressed: () async {
@@ -75,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 15),
         MyTextButton(
+          key: Key('forgotPasswordButton'),
           onPressed: changePassword,
           title: 'Forgot your password?',
           textPadding: EdgeInsets.zero,
@@ -99,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   hint: 'E-mail',
                   iconData: Icons.person,
                   button: RectangularButton(
+                    key: Key('resetPasswordConfirmButton'),
                     title: "Confirm",
                     isLoading: isLoading,
                     onPressed: () async {
