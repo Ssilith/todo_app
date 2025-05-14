@@ -17,16 +17,16 @@ class BlankScaffold extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
-          Positioned.fill(
-            child: ParticlesFly(
-              height: size.height,
-              width: size.width,
-              connectDots: true,
-              numberOfParticles: 50,
-              lineColor: Colors.white54,
-              particleColor: Colors.white54,
-            ),
-          ),
+          // Positioned.fill(
+          //   child: ParticlesFly(
+          //     height: size.height,
+          //     width: size.width,
+          //     connectDots: true,
+          //     numberOfParticles: 50,
+          //     lineColor: Colors.white54,
+          //     particleColor: Colors.white54,
+          //   ),
+          // ),
           ...children,
         ],
       ),
