@@ -1,0 +1,85 @@
+name: Flutter unit tests (mobile + web)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  BENCHMARK_REPEAT: 1000
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target: [mobile, web_js, web_wasm]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.29.2"
+          channel: stable
+        id: flutter
+
+      - name: Cache Flutter & pub packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ${{ steps.flutter.outputs.cache-path }}
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.lock') }}
+
+      - name: Enable web & install Chrome (web targets only)
+        if: startsWith(matrix.target, 'web')
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y chromium-browser || true
+          flutter config --enable-web
+          flutter devices
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run unit tests / builds – ${{ matrix.target }}
+        id: run_tests
+        run: |
+          set -eo pipefail
+          mkdir -p perf
+          TS=$(date +%Y%m%d_%H%M%S)
+          echo "TS=$TS" >> $GITHUB_ENV
+
+          if [[ "${{ matrix.target }}" == "mobile" ]]; then
+            CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+          elif [[ "${{ matrix.target }}" == "web_js" ]]; then
+            CMD="flutter test --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+          else
+            # web_wasm – compile tests to WebAssembly
+            CMD="flutter test --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+          fi
+
+          set +e
+          eval $CMD | tee unit_output.log
+          EXIT=${PIPESTATUS[0]}
+          set -e
+
+          awk '/PERF_REPORT_START/,/PERF_REPORT_END/' unit_output.log | \
+            sed '1d;$d' > perf/unit_${{ matrix.target }}_${TS}.json || true
+
+          if [[ $EXIT -ne 0 ]]; then
+            echo "==== unit test failed on ${{ matrix.target }} ===="
+            cat unit_output.log
+          fi
+          exit $EXIT
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-${{ matrix.target }}-${{ env.TS }}
+          path: perf/unit_${{ matrix.target }}_${{ env.TS }}.json
+          if-no-files-found: warn
