@@ -12,7 +12,9 @@ Future<void> ensureSupabaseInitialized() async {
   try {
     Supabase.instance.client;
     return;
-  } catch (_) {}
+  } catch (e) {
+    print(e);
+  }
 
   await Supabase.initialize(
     url: 'https://dummy.supabase.co',
