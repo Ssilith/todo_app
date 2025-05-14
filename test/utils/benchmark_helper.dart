@@ -24,9 +24,8 @@ Future<void> runPerf(
     var failed = false;
     try {
       await action();
-    } catch (e, st) {
+    } catch (_) {
       failures++;
-      print(e);
       failed = true;
     } finally {
       sw.stop();

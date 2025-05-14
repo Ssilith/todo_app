@@ -10,6 +10,7 @@ void main() {
   setUpAll(() async {
     await ensureSupabaseInitialized();
   });
+
   group('All Integration Tests', () {
     auth.main();
     todo.main();

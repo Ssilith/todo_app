@@ -9,13 +9,6 @@ Future<void> ensureSupabaseInitialized() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
 
-  try {
-    Supabase.instance.client;
-    return;
-  } catch (e) {
-    print(e);
-  }
-
   await Supabase.initialize(
     url: 'https://dummy.supabase.co',
     anonKey: 'public-anon-key',

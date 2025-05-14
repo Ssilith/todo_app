@@ -13,14 +13,15 @@ import '../services/todo_service.dart';
 
 class TodoPage extends StatefulWidget {
   final TodoService? todoService;
-  const TodoPage({super.key, this.todoService});
+  final AuthService? authService;
+  const TodoPage({super.key, this.todoService, this.authService});
 
   @override
   State<TodoPage> createState() => _TodoPageState();
 }
 
 class _TodoPageState extends State<TodoPage> {
-  AuthService authService = AuthService();
+  late AuthService authService;
   ScrollController scrollController = ScrollController();
   TextEditingController newTodoController = TextEditingController();
   late TodoService todoService;
@@ -31,6 +32,7 @@ class _TodoPageState extends State<TodoPage> {
   @override
   void initState() {
     todoService = widget.todoService ?? TodoService();
+    authService = widget.authService ?? AuthService();
     _loadTodos();
     super.initState();
   }
