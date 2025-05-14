@@ -30,7 +30,7 @@ class TodoTile extends StatelessWidget {
             children: [
               Checkbox(
                 value: todo.isComplete,
-                onChanged: (v) => toggleFinished(v),
+                onChanged: toggleFinished,
                 fillColor: WidgetStateProperty.all(
                   todo.isComplete
                       ? Theme.of(context).primaryColor

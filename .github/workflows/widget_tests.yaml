@@ -1,4 +1,4 @@
-name: Flutter unit tests (mobile + web)
+name: Flutter widget tests (mobile + web)
 
 on:
   push:
@@ -11,7 +11,7 @@ env:
   BENCHMARK_REPEAT: 10
 
 jobs:
-  unit:
+  widget:
     runs-on: ubuntu-latest
 
     strategy:
@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run unit tests / builds - ${{ matrix.target }}
+      - name: Run widget tests / builds - ${{ matrix.target }}
         id: run_tests
         run: |
           set -eo pipefail
@@ -55,31 +55,31 @@ jobs:
           echo "TS=$TS" >> $GITHUB_ENV
 
           if [[ "${{ matrix.target }}" == "mobile" ]]; then
-            CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
+            CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/widget_test.dart"
           elif [[ "${{ matrix.target }}" == "web_js" ]]; then
-            CMD="flutter test --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
+            CMD="flutter test --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/widget_test.dart"
           else
             # web_wasm - compile tests to WebAssembly
-            CMD="flutter test --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
+            CMD="flutter test --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/widget_test.dart"
           fi
 
           set +e
-          eval $CMD | tee unit_output.log
+          eval $CMD | tee widget_output.log
           EXIT=${PIPESTATUS[0]}
           set -e
 
-          awk '/PERF_REPORT_START/,/PERF_REPORT_END/' unit_output.log | \
-            sed '1d;$d' > perf/unit_${{ matrix.target }}_${TS}.json || true
+          awk '/PERF_REPORT_START/,/PERF_REPORT_END/' widget_output.log | \
+            sed '1d;$d' > perf/widget_${{ matrix.target }}_${TS}.json || true
 
           if [[ $EXIT -ne 0 ]]; then
-            echo "==== unit test failed on ${{ matrix.target }} ===="
-            cat unit_output.log
+            echo "==== widget test failed on ${{ matrix.target }} ===="
+            cat widget_output.log
           fi
           exit $EXIT
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: unit-${{ matrix.target }}-${{ env.TS }}
-          path: perf/unit_${{ matrix.target }}_${{ env.TS }}.json
+          name: widget-${{ matrix.target }}-${{ env.TS }}
+          path: perf/widget_${{ matrix.target }}_${{ env.TS }}.json
           if-no-files-found: warn
