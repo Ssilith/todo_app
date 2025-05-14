@@ -9,10 +9,10 @@ Future<void> ensureSupabaseInitialized() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
 
-  await Supabase.initialize(
-    url: 'https://dummy.supabase.co',
-    anonKey: 'public-anon-key',
-  );
+  // await Supabase.initialize(
+  //   url: 'https://dummy.supabase.co',
+  //   anonKey: 'public-anon-key',
+  // );
 
   final mockClient = MockSupabaseClient();
   AuthService.overrideInstanceForTesting(mockClient);
