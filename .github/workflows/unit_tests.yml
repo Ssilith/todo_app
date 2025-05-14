@@ -55,12 +55,12 @@ jobs:
           echo "TS=$TS" >> $GITHUB_ENV
 
           if [[ "${{ matrix.target }}" == "mobile" ]]; then
-            CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+            CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
           elif [[ "${{ matrix.target }}" == "web_js" ]]; then
-            CMD="flutter test --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+            CMD="flutter test --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
           else
             # web_wasm – compile tests to WebAssembly
-            CMD="flutter test --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/all_unit_tests.dart"
+            CMD="flutter test --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/unit_test.dart"
           fi
 
           set +e
