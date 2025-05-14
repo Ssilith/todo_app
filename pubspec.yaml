@@ -31,6 +31,10 @@ dev_dependencies:
   # mobile
   flutter_launcher_icons: ^0.14.3
 
+  # tests
+  build_runner: ^2.4.15
+  mockito: ^5.4.5
+
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
