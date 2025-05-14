@@ -12,7 +12,8 @@ import '../models/todo.dart';
 import '../services/todo_service.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+  final TodoService? todoService;
+  const TodoPage({super.key, this.todoService});
 
   @override
   State<TodoPage> createState() => _TodoPageState();
@@ -22,13 +23,14 @@ class _TodoPageState extends State<TodoPage> {
   AuthService authService = AuthService();
   ScrollController scrollController = ScrollController();
   TextEditingController newTodoController = TextEditingController();
-  TodoService todoService = TodoService();
+  late TodoService todoService;
   List<Todo> todos = [];
   int? _editingIndex;
   bool _isAdding = false;
 
   @override
   void initState() {
+    todoService = widget.todoService ?? TodoService();
     _loadTodos();
     super.initState();
   }
