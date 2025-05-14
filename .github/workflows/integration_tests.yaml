@@ -57,10 +57,10 @@ jobs:
           if [[ "${{ matrix.target }}" == "mobile" ]]; then
             CMD="flutter test --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/integration_test.dart"
           elif [[ "${{ matrix.target }}" == "web_js" ]]; then
-            CMD="flutter test --timeout "40m" --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/integration_test.dart"
+            CMD="flutter test --timeout=40m --platform chrome --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/integration_test.dart"
           else
             # web_wasm - compile tests to WebAssembly
-            CMD="flutter test --timeout "40m" --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/integration_test.dart"
+            CMD="flutter test --timeout=40m --platform chrome --wasm --dart-define=BENCHMARK_REPEAT=$BENCHMARK_REPEAT test/integration_test.dart"
           fi
 
           set +e
