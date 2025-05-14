@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<void> safePumpAndSettle(WidgetTester tester) async {
+Future<void> safePump(
+  WidgetTester tester, {
+  int frameCount = 5,
+  Duration perFrame = const Duration(milliseconds: 100),
+}) async {
   try {
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    for (var i = 0; i < frameCount; i++) {
+      await tester.pump(perFrame);
+    }
   } catch (e) {
-    await tester.pump(const Duration(milliseconds: 500));
+    debugPrint('Warning: pumpAndSettle timed out: $e');
   }
 }
 
@@ -47,7 +53,7 @@ Future<void> addTodo(WidgetTester tester, {String name = 'Buy milk'}) async {
   final fab = find.byIcon(Icons.add);
 
   await tester.tap(fab.first, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 
   final textFields = find.byType(TextField);
   await tester.enterText(textFields.first, name);
@@ -55,14 +61,14 @@ Future<void> addTodo(WidgetTester tester, {String name = 'Buy milk'}) async {
 
   final checkIcons = find.byIcon(Icons.check);
   await tester.tap(checkIcons.last, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 }
 
 Future<void> editTodo(
   WidgetTester tester, {
   String newName = 'Buy milk & bread',
 }) async {
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 
   final containers = find.descendant(
     of: find.byType(ListView),
@@ -80,7 +86,7 @@ Future<void> editTodo(
   await tester.tap(todoItem, warnIfMissed: false);
   await tester.pump(const Duration(milliseconds: 100));
   await tester.tap(todoItem, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 
   final textField = find.byType(TextField);
   await tester.enterText(textField.first, newName);
@@ -88,20 +94,20 @@ Future<void> editTodo(
 
   final checkButton = find.byIcon(Icons.check);
   await tester.tap(checkButton.last, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 }
 
 Future<void> toggleTodo(WidgetTester tester) async {
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 
   final cb = find.byType(Checkbox);
   await tester.tap(cb.first, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 }
 
 Future<void> deleteTodo(WidgetTester tester) async {
-  await safePumpAndSettle(tester);
+  await safePump(tester);
   final deleteBtn = find.byIcon(Icons.delete);
   await tester.tap(deleteBtn.first, warnIfMissed: false);
-  await safePumpAndSettle(tester);
+  await safePump(tester);
 }

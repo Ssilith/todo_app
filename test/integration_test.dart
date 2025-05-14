@@ -7,8 +7,9 @@ import 'utils/benchmark_helper.dart';
 import 'utils/supabase_test_setup.dart';
 
 void main() {
-  setUpAll(() async => await ensureSupabaseInitialized());
-
+  setUpAll(() async {
+    await ensureSupabaseInitialized();
+  });
   group('All Integration Tests', () {
     auth.main();
     todo.main();
