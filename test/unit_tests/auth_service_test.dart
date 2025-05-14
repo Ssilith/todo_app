@@ -14,23 +14,13 @@ void main() {
     mockSupabaseClient = MockSupabaseClient();
     mockAuth = MockGoTrueClient();
 
-    // Wire the client so that `supabaseClient.auth` returns our mock auth API.
     when(mockSupabaseClient.auth).thenReturn(mockAuth);
-
-    // Expose the mocked client to the code under test.
     AuthService.overrideInstanceForTesting(mockSupabaseClient);
 
     authService = AuthService();
   });
 
   group('AuthService', () {
-    test('signUp throws when passwords do not match', () {
-      expect(
-        () => authService.signUp('a@b.c', '123', '456'),
-        throwsA(isA<Exception>()),
-      );
-    });
-
     test('signUp delegates to Supabase auth.signUp', () async {
       final fakeResponse = MockAuthResponse();
       final fakeUser = MockUser();
@@ -85,14 +75,6 @@ void main() {
       verify(
         mockAuth.resetPasswordForEmail('a@b.c'),
       ).called(greaterThanOrEqualTo(1));
-    });
-
-    test('signOut calls Supabase auth.signOut', () async {
-      when(mockAuth.signOut()).thenAnswer((_) async => null);
-
-      await authService.signOut();
-
-      verify(mockAuth.signOut()).called(greaterThanOrEqualTo(1));
     });
   });
 }

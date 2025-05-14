@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/widgets/message.dart';
@@ -26,7 +24,9 @@ class LogoutButton extends StatelessWidget {
         try {
           await authService.signOut();
         } catch (e) {
-          displayErrorMotionToast('Failed to log out.', context);
+          if (context.mounted) {
+            displayErrorMotionToast('Failed to log out.', context);
+          }
         }
       },
     );
