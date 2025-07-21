@@ -1,16 +1,26 @@
-# todo_app
+<h3 align="center">Todo App</h3>
+<p align="center">
+  <img src="assets/logo.png" alt="Todo App Logo" width="100">
+</p>
 
-A new Flutter project.
+<p>
+The Todo App is a minimalist task management solution built with Flutter and Supabase. It helps users track daily tasks with authentication.
+</p>
 
-## Getting Started
+<p><strong>Key Features:</strong></p>
+<ul>
+  <li>Task Management: Create, read, update, and delete tasks.</li>
+  <li>Authentication: Secure login via Supabase Auth (email/password).</li>
+  <li>Responsive UI: Clean and adaptive layout.</li>
+  <li>Testing & CI: Full coverage with unit, widget, and integration tests. Automated via GitHub Actions.</li>
+</ul>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<h3>Technical Details:</h3>
+<p>
+Built using Flutter and Supabase. Core dependencies include:
+<ul>
+  <li><code>supabase_flutter</code></li>
+  <li><code>flutter_test</code> for test automation</li>
+  <li>CI/CD integration with <code>GitHub Actions</code></li>
+</ul>
+</p>
