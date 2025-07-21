@@ -4,7 +4,7 @@
 </p>
 
 <p>
-The Todo App is a minimalist task management solution built with Flutter and Supabase. It helps users track daily tasks with authentication.
+The Todo App is a minimalist task management solution built with Flutter and Supabase. It helps users track daily tasks.
 </p>
 
 <p><strong>Key Features:</strong></p>
